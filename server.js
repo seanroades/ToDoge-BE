@@ -1,15 +1,21 @@
 const express = require('express');
 const serverless = require('serverless-http');
 require('dotenv').config();
+
 const app = express();
-const router = express.Router();
+// const router = express.Router();
 const port = process.env.PORT || 5001;
+
 const cors = require('cors');
 const path = require('path');
 var bodyParser = require('body-parser');
+
 const { Configuration, OpenAIApi } = require("openai");
-app.use(cors());
+
 const stripe = require('stripe')("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");
+
+app.use(cors());
+
 const MongoClient = require("mongodb").MongoClient;
 const client = new MongoClient(process.env.DB_URI)
 var jsonParser = bodyParser.json()
@@ -20,7 +26,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-router.post('/api/getList', jsonParser, async (req, res) => {
+app.post('/api/getList', jsonParser, async (req, res) => {
   await client.connect();
   try {
     const database = client.db("todoge");
@@ -49,7 +55,8 @@ router.post('/api/getList', jsonParser, async (req, res) => {
   }
 });
 
-router.post('/api/modifyList', jsonParser, async (req, res) => {
+app.post('/api/modifyList', jsonParser, async (req, res) => {
+  await client.connect();
   try {
     const database = client.db("todoge");
     const lists = database.collection("lists");
@@ -70,7 +77,7 @@ router.post('/api/modifyList', jsonParser, async (req, res) => {
   }
 })
 
-router.post('/api/makeList', jsonParser, async (req, res) => {
+app.post('/api/makeList', jsonParser, async (req, res) => {
   await client.connect();
   try {
     const database = client.db("todoge");
@@ -103,7 +110,8 @@ router.post('/api/makeList', jsonParser, async (req, res) => {
   }
 })
 
-router.get('/api/upgrade', async (req, res) => {
+app.get('/api/upgrade', async (req, res) => {
+  await client.connect();
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
@@ -123,8 +131,8 @@ router.get('/api/upgrade', async (req, res) => {
   })
 });
 
-router.post('/api/dogechat', jsonParser, async (req, res) => { 
-  console.log(req.body)
+app.post('/api/dogechat', jsonParser, async (req, res) => {
+  await client.connect();
   var chatlog = req.body.chatlog
   var prompt = "Pretend you are a sad dog who was betrayed. \nYou are now talking to a human who betrayed you. Respond to them and ask them questions. The conversation will be provided below with your previous lines marked as \"dog:\" and their previous lines  marked as \"human\" for context.\ndog: 'why did you betray me human'?\n"
   var newprompt = prompt + chatlog;
@@ -153,11 +161,6 @@ router.post('/api/dogechat', jsonParser, async (req, res) => {
   }
 });
 
-app.use('/.netlify/functions/server', router);  // path must route to lambda
-
-app.listen(port, async () => {
-  await client.connect();
-  console.log(`Server is up at port ${port}`);
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
-
-module.exports.handler = serverless(app);

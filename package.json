@@ -1,11 +1,11 @@
 {
   "name": "backend_todoge",
   "version": "1.0.0",
-  "description": "",
+  "description": "api for todoge app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/.bin/netlify-lambda serve src",
+    "start": "node server.js",
     "build": "./node_modules/.bin/netlify-lambda build src"
   },
   "author": "",
@@ -22,5 +22,8 @@
     "serverless-http": "^3.1.1",
     "stripe": "^11.9.1",
     "validator": "^13.9.0"
+  },
+  "engines": {
+    "node": "16.17.0"
   }
 }
