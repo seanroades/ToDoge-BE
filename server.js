@@ -66,11 +66,11 @@ app.post('/api/modifyList', jsonParser, async (req, res) => {
     // this option instructs the method to create a document if no documents match the filter
     const options = { upsert: true };
     const updateDoc = {
-      $set: {
+      $set: { // Set
         todos: req.body.list
       },
     };
-    const result = await lists.updateOne(filter, updateDoc, options);
+    const result = await lists.updateOne(filter, updateDoc, options); // Filter
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
     );
@@ -81,7 +81,7 @@ app.post('/api/modifyList', jsonParser, async (req, res) => {
 
 app.post('/api/makeList', jsonParser, async (req, res) => {
   await client.connect();
-  try {
+  try { // Try/Catch Logic
     const database = client.db("todoge");
     const lists = database.collection("lists");
     // create a document to insert
@@ -133,7 +133,7 @@ app.get('/api/upgrade', async (req, res) => {
   })
 });
 
-app.post('/api/dogechat', jsonParser, async (req, res) => {
+app.post('/api/dogechat', jsonParser, async (req, res) => { // Routing
   await client.connect();
   var chatlog = req.body.chatlog
   var prompt = "Pretend you are a sad dog who was betrayed. \nYou are now talking to a human who betrayed you. Respond to them and ask them questions. The conversation will be provided below with your previous lines marked as \"dog:\" and their previous lines  marked as \"human\" for context.\ndog: 'why did you betray me human'?\n"
@@ -163,6 +163,6 @@ app.post('/api/dogechat', jsonParser, async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(port, () => { // listening
   console.log(`Listening on port ${port}`);
 });
