@@ -18,7 +18,7 @@ const MongoClient = require("mongodb").MongoClient;
 const client = new MongoClient(process.env.DB_URI)
 var jsonParser = bodyParser.json()
 // yuh
-YOUR_DOMAIN = 'https://to-doge.com/';
+YOUR_DOMAIN = 'https://master--cs178-todo-sr.netlify.app/';
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
