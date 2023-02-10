@@ -17,7 +17,7 @@ app.use(cors());
 const MongoClient = require("mongodb").MongoClient;
 const client = new MongoClient(process.env.DB_URI)
 var jsonParser = bodyParser.json()
-
+// yuh
 YOUR_DOMAIN = 'http://localhost:8080/';
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
