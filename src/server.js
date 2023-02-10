@@ -1,12 +1,14 @@
 const express = require('express');
+const serverless = require('serverless-http');
 require('dotenv').config();
-const router = express.Router()
+const app = express();
+const router = express.Router();
 const port = process.env.PORT || 5001;
 const cors = require('cors');
 const path = require('path');
 var bodyParser = require('body-parser');
 const { Configuration, OpenAIApi } = require("openai");
-router.use(cors());
+app.use(cors());
 const stripe = require('stripe')("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");
 const MongoClient = require("mongodb").MongoClient;
 const client = new MongoClient(process.env.DB_URI)
@@ -151,11 +153,11 @@ router.post('/api/dogechat', jsonParser, async (req, res) => {
   }
 });
 
-router.use(express.static('public'));
-router.get('*', (req, res) => {
-   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
-router.listen(port, async () => {
+app.use('/.netlify/functions/server', router);  // path must route to lambda
+
+app.listen(port, async () => {
   await client.connect();
   console.log(`Server is up at port ${port}`);
 });
+
+module.exports.handler = serverless(app);
