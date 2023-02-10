@@ -3,7 +3,6 @@ const serverless = require('serverless-http');
 require('dotenv').config();
 
 const app = express();
-// const router = express.Router();
 const port = process.env.PORT || 5001;
 
 const cors = require('cors');
