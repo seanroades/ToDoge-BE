@@ -2,7 +2,7 @@ const express = require('express');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5069;
 
 const cors = require('cors');
 const path = require('path');
@@ -18,7 +18,7 @@ const MongoClient = require("mongodb").MongoClient;
 const client = new MongoClient(process.env.DB_URI)
 var jsonParser = bodyParser.json()
 // yuh
-YOUR_DOMAIN = 'http://localhost:8080/';
+YOUR_DOMAIN = 'https://to-doge.com/';
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
