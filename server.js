@@ -24,6 +24,10 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+app.get('/api/hello', (req, res) => {
+  res.send({ express: 'Hello From Express' });
+});
+
 app.post('/api/getList', jsonParser, async (req, res) => {
   await client.connect();
   try {
